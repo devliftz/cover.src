@@ -51,7 +51,7 @@
 
 Invite the officially hosted bot from this [invite link](https://discord.com/api/oauth2/authorize?client_id=1096484859477754008&permissions=8&scope=bot).
 
-For information on how to use the bot, see https://bot.palembani.xyz/docs
+For information on how to use the bot, see https://icey.fr
 
 ### Self-Hosting
 
