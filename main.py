@@ -78,4 +78,14 @@ async def setprefix(ctx, *, newprefix: str):
             )
         await ctx.reply(embed = embed_message, mention_author=False)
 
+@bot.command(aliases=["rs", "rb"])
+async def restart(ctx):
+    embed = discord.Embed(title="",
+                          description=f"""> **Restarting**""",
+                          color=0xffffff)
+    await ctx.reply(embed=embed)
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            await bot.reload_extension(f'cogs.{filename[:-3]}')
+
 bot.run(token)
