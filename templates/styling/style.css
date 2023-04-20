@@ -5,11 +5,11 @@
     margin: 0;
     padding: 0;
     /* Add any other styling you want */
-  }
+}
   
   .navbar li {
     display: inline-block;
-  }
+}
   
   .navbar li a {
     display: block;
@@ -17,4 +17,4 @@
     padding: 15px;
     text-decoration: none;
     color: #333;
-  }
+}
