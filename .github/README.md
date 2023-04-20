@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/ZiRO-Bot/ziBot"><img src="/assets/img/banner.png" alt=" " width="540"/></a>
+    <a href=""><img src="https://github.com/devliftz/cover.src/blob/main/.github/img.png?raw=true" alt=" " width="540"/></a>
 </p>
 
 <h1 align="center"><code>Cover 👻 (codename C0VR)</code></h1>
