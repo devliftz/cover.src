@@ -6,21 +6,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styling/style.css">
+  <style>
+    .container {
+      position: relative;
+      /* Set the width and height of the container to match the image size */
+      width: 200px;
+      height: 200px;
+    }
+    
+    .text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      /* Add padding and other styles to position the text as desired */
+      padding: 20px;
+      color: #fff;
+    }
+        /* Reset default list styles */
+    .navbar {
+      list-style-type: none;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      /* Add any other styling you want */
+    }
+
+    .navbar li {
+      display: inline-block;
+    }
+
+    .navbar li a {
+      display: block;
+      border-radius: 8px;
+      padding: 15px;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body class="bg-[#0c0c0c]">
-  <div class="w-40 h-40 mx-auto mt-10 drop-shadow-md scale-100 hover:scale-105 ease-out duration-500 hover:opacity-50">
-    <a href="#">
-      <img class="rounded-full" src="https://cdn.discordapp.com/avatars/1096484859477754008/c912fe6323c3885f5d42302b7caa0812?size=1024">
+  <div class="group w-40 h-40 mx-auto mt-10 drop-shadow-md scale-100 hover:scale-105 ease-out duration-500 hover:opacity-40">
+    <a href="#" class="container">
+      <img class="rounded-full z-1" src="https://cdn.discordapp.com/avatars/1096484859477754008/c912fe6323c3885f5d42302b7caa0812?size=1024">
+      <div class="text">
+        <h1 class="flex items-center justify-center h-full z-0 opacity-0 group-hover:opacity-60 duration-500">Invite Me</h1>
+      </div>
     </a>
   </div>
   <div class="bg-[#0a0a0a] w-[380px] h-14 mx-auto mt-10 rounded-lg border border-zinc-900">
     <nav>
       <ul class="navbar">
-        <li class="hover:opacity-70 duration-500"><a href="#home">Home</a></li>
-        <li class="hover:opacity-70 duration-500"><a href="#about">About</a></li>
-        <li class="hover:opacity-70 duration-500"><a href="#services">Services</a></li>
-        <li class="hover:opacity-70 duration-500"><a href="#contact">Contact</a></li>
+        <li class="hover:opacity-70 duration-500"><a class="text-[#555]" href="#home">Home</a></li>
+        <li class="hover:opacity-70 duration-500"><a class="text-[#333]" href="#features">Features</a></li>
+        <li class="hover:opacity-70 duration-500"><a class="text-[#333]" href="#about">About</a></li>
+        <li class="hover:opacity-70 duration-500"><a class="text-[#333]" href="#support">Support</a></li>
       </ul>
     </nav>
   </div>

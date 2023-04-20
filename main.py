@@ -5,7 +5,7 @@ import requests
 from modules.formatter import Colorate, Colors
 import os
 from modules import handler
-from discord- import Dashboard
+from modules import ws
 from modules import mobile
 
 from modules.help_formatter import AppMenu, PrettyHelp
@@ -24,10 +24,6 @@ token = bcfg['TOKEN']
 menu = AppMenu(ephemeral=True)
 ending_note = " "
 bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2, help_command=PrettyHelp(menu=menu, ending_note=ending_note), description="Commands For bot owner to manage its components")
-bot_dashboard = Dashboard(bot,
-	"secret_key", 
-	"https://your-bot-website.com/dashboard"
-)
 
 shardusg = bot.shard_id
 
@@ -99,4 +95,5 @@ async def restart(ctx):
         if filename.endswith('.py'):
             await bot.reload_extension(f'cogs.{filename[:-3]}')
 
-bot.run(token)
+ws.alive()
+bot.run(token=token, log_handler=None)
