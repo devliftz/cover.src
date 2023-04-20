@@ -1,7 +1,11 @@
 import discord
 from discord.ext import commands
-
 import json
+import requests
+from modules.formatter import Colorate, Colors
+import os
+from modules import handler
+from modules import mobile
 
 def get_server_prefix(client, message):
     with open("config/prefixes.json", "r") as f:
@@ -14,12 +18,20 @@ with open("config/bot.json", "r") as f:
 
 token = bcfg['TOKEN']
 
-activity=discord.Activity(type=discord.ActivityType.listening, name=";")
-bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2, activity=activity)
+bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2)
+
+shardusg = bot.shard_id
 
 @bot.event
 async def on_ready():
-    print("Reays")
+    handler.log(f"Logging in using static token")
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            await bot.load_extension(f'cogs.{filename[:-3]}')
+
+@bot.event
+async def on_shard_ready(shard_id):
+    handler.log(f"Shard ID: {shard_id} is ready!")
 
 @bot.event
 async def on_guild_join(guild):
@@ -66,4 +78,4 @@ async def setprefix(ctx, *, newprefix: str):
             )
         await ctx.reply(embed = embed_message, mention_author=False)
 
-bot.run(token, log_handler=None)
+bot.run(token)

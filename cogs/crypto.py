@@ -1,16 +1,25 @@
-@commands.command(aliases=["bitcoin"])
+import discord
+from discord.ext import commands
+import requests
+import json
+
+class Crypto(commands.Cog, ):
+    def __init__(self, Client):
+        self.client = Client
+
+    @commands.command(aliases=["bitcoin"])
     async def btc(self, ctx):
 
         url = "https://api.livecoinwatch.com/coins/single"
 
         payload = json.dumps({
-        "currency": "USD", # GBP works too
-        "code": "BTC", # These are codenames for the coins, u can change this to ETH, etc in other commands
+        "currency": "USD",
+        "code": "BTC",
         "meta": True
         })
         headers = {
         'content-type': 'application/json',
-        'x-api-key': 'YOUR KEY HERE'
+        'x-api-key': '27002a59-1626-42a4-a3e4-c689d3a959fe'
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
@@ -37,3 +46,6 @@
             await ctx.reply(embed = positive_message, mention_author=False)
         else: 
             await ctx.reply(embed = negetive_message, mention_author=False)
+
+async def setup(client):
+    await client.add_cog(Crypto(client))
