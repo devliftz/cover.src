@@ -6,8 +6,9 @@ import json
 class AppOwner(commands.Cog):
     def __init__(self, Client):
         self.client = Client
+        self.description = """Owner commands only etc. ?prefixes"""
     
-    @commands.command()
+    @commands.command(description="Get list of every bot prefix")
     async def prefixes(self, ctx):
         with open("./config/prefixes.json", "r") as f:
             pr = f.read()

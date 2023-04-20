@@ -6,8 +6,9 @@ import json
 class Crypto(commands.Cog, ):
     def __init__(self, Client):
         self.client = Client
+        self.description = "Get latest information about crypto"
 
-    @commands.command(aliases=["bitcoin"])
+    @commands.command(description="View BitCoin Info", aliases=["bitcoin"])
     async def btc(self, ctx):
 
         url = "https://api.livecoinwatch.com/coins/single"

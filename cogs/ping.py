@@ -7,8 +7,9 @@ class Ping(commands.Cog):
     def __init__(self, Client):
         self.client = Client
         self.shards = self.client.shards
+        self.description = "Check bot`s latency"
     
-    @commands.command()
+    @commands.command(description="Check shard latency")
     async def shard(self, ctx, shard_id: int):
         shard = self.client.get_shard(shard_id)
         if shard is None:

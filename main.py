@@ -7,6 +7,8 @@ import os
 from modules import handler
 from modules import mobile
 
+from modules.help_formatter import AppMenu, PrettyHelp
+
 def get_server_prefix(client, message):
     with open("config/prefixes.json", "r") as f:
         prefix = json.load(f)
@@ -18,13 +20,17 @@ with open("config/bot.json", "r") as f:
 
 token = bcfg['TOKEN']
 
-bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2)
+menu = AppMenu(ephemeral=True)
+ending_note = " "
+bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2, help_command=PrettyHelp(menu=menu, ending_note=ending_note), description="Commands For bot owner to manage its components")
 
 shardusg = bot.shard_id
 
 @bot.event
 async def on_ready():
     handler.log(f"Logging in using static token")
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="?"))
+
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             await bot.load_extension(f'cogs.{filename[:-3]}')
@@ -53,7 +59,7 @@ async def on_guild_remove(guild):
     with open("config/prefixes.json", "w") as f:
         json.dump(prefix, f, indent=4)
 
-@bot.command(aliases=["prefix", "changeprefix"])
+@bot.command(description="Change Server Prefix", aliases=["prefix", "changeprefix"])
 async def setprefix(ctx, *, newprefix: str):
 
     if len(newprefix) > 2:
@@ -78,7 +84,7 @@ async def setprefix(ctx, *, newprefix: str):
             )
         await ctx.reply(embed = embed_message, mention_author=False)
 
-@bot.command(aliases=["rs", "rb"])
+@bot.command(description="Allows bot owner to reload all commands", aliases=["rs", "rb"])
 async def restart(ctx):
     embed = discord.Embed(title="",
                           description=f"""> **Restarting**""",
