@@ -1,14 +1,10 @@
-import discord
-from discord.ext import commands
-import json
-import requests
-from modules.formatter import Colorate, Colors
+import hypecord
+from hypecord.ext import commands
+from core.emojis import *
+from core.error import on_command_error
 import os
-from modules import handler
-from modules import ws
-from modules import mobile
-
-from modules.help_formatter import AppMenu, PrettyHelp
+import json
+import pylast
 
 def get_server_prefix(client, message):
     with open("config/prefixes.json", "r") as f:
@@ -16,36 +12,48 @@ def get_server_prefix(client, message):
 
     return prefix[str(message.guild.id)]
 
-with open("config/bot.json", "r") as f:
-    bcfg = json.load(f)
-
-token = bcfg['TOKEN']
-
-menu = AppMenu(ephemeral=True)
-ending_note = " "
-bot = commands.AutoShardedBot(command_prefix=get_server_prefix, intents=discord.Intents().all(), shard_count=2, help_command=PrettyHelp(menu=menu, ending_note=ending_note), description="Commands For bot owner to manage its components")
-
-shardusg = bot.shard_id
+bot = commands.AutoShardedBot(command_prefix=get_server_prefix, shard_count=1, intents=hypecord.Intents.all())
+bot.on_command_error = on_command_error
 
 @bot.event
 async def on_ready():
-    handler.log(f"Logging in using static token")
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="?"))
+    await bot.change_presence(activity=hypecord.Activity(type=hypecord.ActivityType.listening, name=f"Hi"))
 
-    for filename in os.listdir('./cogs'):
+    for filename in os.listdir('./exts'):
         if filename.endswith('.py'):
-            await bot.load_extension(f'cogs.{filename[:-3]}')
+            await bot.load_extension(f'exts.{filename[:-3]}')
 
-@bot.event
-async def on_shard_ready(shard_id):
-    handler.log(f"Shard ID: {shard_id} is ready!")
+@bot.command(description="Change Server Prefix", aliases=["prefix", "changeprefix"])
+async def setprefix(ctx, *, newprefix: str):
+
+    if len(newprefix) > 2:
+        embed_message = hypecord.Embed(
+            color=(0xffffff),
+            description=(f"> {warning} **{ctx.author.mention}: Prefix is too large**"),
+        )
+        await ctx.reply(embed = embed_message, mention_author=False)
+    
+    else:
+        with open("config/prefixes.json", "r") as f:
+            prefix = json.load(f)
+
+        prefix[str(ctx.guild.id)] = newprefix
+
+        with open("config/prefixes.json", "w") as f:
+            json.dump(prefix, f, indent=4)
+
+        embed_message = hypecord.Embed(
+                color=(0xffffff),
+                description=(f"> {check} {ctx.author.mention}: Guild prefix changed to `{newprefix}`"),
+            )
+        await ctx.reply(embed = embed_message, mention_author=False)
 
 @bot.event
 async def on_guild_join(guild):
     with open("config/prefixes.json", "r") as f:
         prefix = json.load(f)
 
-    prefix[str(guild.id)] = ";"
+    prefix[str(guild.id)] = "?"
 
     with open("config/prefixes.json", "w") as f:
         json.dump(prefix, f, indent=4)
@@ -60,40 +68,4 @@ async def on_guild_remove(guild):
     with open("config/prefixes.json", "w") as f:
         json.dump(prefix, f, indent=4)
 
-@bot.command(description="Change Server Prefix", aliases=["prefix", "changeprefix"])
-async def setprefix(ctx, *, newprefix: str):
-
-    if len(newprefix) > 2:
-        embed_message = discord.Embed(
-            color=(0x758A85),
-            description=(f"> <:caution:1096425475590598836>  {ctx.author.mention}: Prefix is too large"),
-        )
-        await ctx.reply(embed = embed_message, mention_author=False)
-    
-    else:
-        with open("config/prefixes.json", "r") as f:
-            prefix = json.load(f)
-
-        prefix[str(ctx.guild.id)] = newprefix
-
-        with open("config/prefixes.json", "w") as f:
-            json.dump(prefix, f, indent=4)
-
-        embed_message = discord.Embed(
-                color=(0x758A85),
-                description=(f"> <:check:1096543207837421648> {ctx.author.mention}: Guild prefix changed to `{newprefix}`"),
-            )
-        await ctx.reply(embed = embed_message, mention_author=False)
-
-@bot.command(description="Allows bot owner to reload all commands", aliases=["rs", "rb"])
-async def restart(ctx):
-    embed = discord.Embed(title="",
-                          description=f"""> **Restarting**""",
-                          color=0xffffff)
-    await ctx.reply(embed=embed)
-    for filename in os.listdir('./cogs'):
-        if filename.endswith('.py'):
-            await bot.reload_extension(f'cogs.{filename[:-3]}')
-
-ws.alive()
-bot.run(token=token, log_handler=None)
+bot.init("MTA5NjQ4NDg1OTQ3Nzc1NDAwOA.Gat6gS.5a4i99B82RUou1b9h-qH4qp8oHK86MouNWj-0s", mobile=True, api_key="NSKBG")

@@ -1,0 +1,10 @@
+{
+    "user1": {
+        "id": "00000000000000000000",
+        "reason": "Example Blacklist reason"
+    },
+    "user2": {
+        "id": "1111111111111111111",
+        "reason": "Literally no reason"
+    }
+}
