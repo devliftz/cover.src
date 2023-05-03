@@ -1,7 +1,7 @@
 import json
 
 # Load emoji data from a JSON file
-with open('./config/emojis.json', 'r') as f:
+with open('./src/config/emojis.json', 'r') as f:
     emoji_data = json.load(f)
 
 # Define emojis as global variables
